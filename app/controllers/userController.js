@@ -27,28 +27,29 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   const { user } = req.body;
-  User.find({ name: user.name, age: user.age })
+  User.find({ email: user.email })
     .exec()
-    .then((result) => {
+    .then(async (result) => {
       if (result.length > 0) {
         return res.status(406).json({
-          message: "User already in shelter",
+          message: "User already in db",
         });
       }
-      const newUser = User.create(User);
-      console.log("data >>>>", newUser);
-      res.status(200).json({
-        success: true,
-        message: `${req.method} - User created successfully`,
-      });
-    })
-    .Userch((err) => {
-      console.error(err);
-      res.status(500).json({
-        error: {
-          message: "could not save User",
-        },
-      });
+      try {
+        const newUser = await User.create(user);
+        console.log("data >>>>", newUser);
+        res.status(200).json({
+          success: true,
+          message: `${req.method} - User created successfully`,
+        });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({
+          error: {
+            message: "could not save User",
+          },
+        });
+      }
     });
 };
 
