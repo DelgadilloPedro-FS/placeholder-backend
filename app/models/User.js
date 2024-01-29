@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:trueF
+        required:true
     },
     ratedArt: [
         { 
