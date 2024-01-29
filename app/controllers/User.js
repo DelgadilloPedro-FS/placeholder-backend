@@ -55,7 +55,9 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { id } = req.params;
   const updateData = req.body.user; // Get updated data
-  const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true }); // Find and update User
+  const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+    new: true,
+  }); // Find and update User
   if (!updatedUser) {
     return res.status(404).json({
       success: false,
