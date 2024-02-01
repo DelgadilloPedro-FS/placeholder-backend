@@ -3,7 +3,11 @@ const User = require("../models/User")
 getAllArts = async (req, res) => {
   try {
     const arts = await Art.find();
-    res.json(arts);
+    res.status(200).json({
+      success: true,
+      message: `${req.method} - request to Art endpoint`,
+      arts,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch Arts" });
@@ -28,13 +32,6 @@ createArt = async (req, res) => {
   const artData = req.body.art;
   try {
     const newArt = await Art.create(artData);
-
-    // Add the new art to the user
-    const userId = req.body.userId; // Assuming userId is passed in the request body
-    const user = await User.findById(userId);
-    user.ratedArt.push(newArt._id);
-    await user.save();
-
     res.status(201).json({ message: "Art created successfully", art: newArt });
   } catch (error) {
     console.error(error);
